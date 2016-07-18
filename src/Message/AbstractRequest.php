@@ -427,4 +427,24 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
     }
 
     #endregion
+
+    
+    public function getCustomerID()
+    {
+        $user = Auth::user();
+        return $user->id;
+    }
+
+    public function getIPAddress()
+    {
+        return $_SERVER['REMOTE_ADDR'];
+    }
+
+    public function getSessionId()
+    {
+        $user = Auth::user();
+        $keyFingerPrint = $user->id . "deviceFingerprint";
+        return Cache::get($keyFingerPrint);
+    }
+    
 }
