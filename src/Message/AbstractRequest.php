@@ -12,6 +12,14 @@ use SoapFault;
 use Omnipay\Cybersource\BankAccount;
 use Omnipay\Cybersource;
 
+
+use Auth;
+use Session;
+use Cache;
+use stdClass;
+use App\Producto;
+use App\Libraries\Utils\Carretilla;
+
 /**
  * Authorize.Net Abstract Request
  */
@@ -97,6 +105,34 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
 
         // add the wsse token to the soap object, by reference
         $this->addWsseToken($soap);
+
+
+           // DATA RQUIRED FROM CYBERSOURCE
+
+        $this->request->billTo->customerID = $this->getCustomerID();
+        $this->request->billTo->ipAddress = $this->getIPAddress();
+        $this->request->deviceFingerprintID = $this->getSessionId();
+
+
+        // $orders = Carretilla::getAllWithAmount();
+        // $this->request->item = array();
+        // foreach ($orders as $key => $value) {
+        //     $item = new stdClass;
+        //     $my_item_id = $value['id'];
+
+        //     $order = Producto::find($my_item_id);
+        //     $item->id = $value['id'];
+        //     $item->productName = $order->title;
+        //     $item->unitPrice = $value['price'];
+        //     $item->quantity = $value['amount'];
+        //     $item->productCode = "default";
+        //     $item->productSKU = $order->code;
+        //     $item->type = "default";
+        //     $this->request->item[] = $item;
+            
+        // }
+
+
 
         // save the request so you can get back what was generated at any point
         $response = $soap->runTransaction($this->request);
@@ -428,7 +464,7 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
 
     #endregion
 
-    
+
     public function getCustomerID()
     {
         $user = Auth::user();
@@ -446,5 +482,5 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
         $keyFingerPrint = $user->id . "deviceFingerprint";
         return Cache::get($keyFingerPrint);
     }
-    
+
 }
