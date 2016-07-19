@@ -190,6 +190,7 @@ class CybersourceResponse extends AbstractResponse
         '246' => 'The capture or credit is not voidable because the capture or credit information has laready been submitted to your processor. Or, you requested a void for a type of transaction that cannot be voided.',
         '247' => 'You requested a credit for a capture that was previously voided.',
         '250' => 'Error: The request was received, but there was a timeout at the payment processor.',
+        '481' => 'The order has been rejected by Decision Manager.',
         '520' => 'The authorization request was approved by the issuing bank but declined by CyberSource based on your Smart Authorization settings.',
     );
 
