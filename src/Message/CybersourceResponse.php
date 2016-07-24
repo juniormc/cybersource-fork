@@ -7,6 +7,7 @@ use Omnipay\Common\Exception\InvalidResponseException;
 use Omnipay\Common\Message\AbstractResponse;
 use Omnipay\Common\Message\RedirectResponseInterface;
 use Omnipay\Common\Message\RequestInterface;
+use Session;
 
 /**
  * Cybersource Response
@@ -194,6 +195,47 @@ class CybersourceResponse extends AbstractResponse
         '520' => 'The authorization request was approved by the issuing bank but declined by CyberSource based on your Smart Authorization settings.',
     );
 
+    private static $result_codes_es = array(
+        '100' => 'Successful transaction.',
+        '101' => 'En la petición no se encuentra uno o más campos obligatorios.',
+        '102' => 'Uno o más campos en la solicitud contiene datos no válidos.',
+        '110' => 'Only a partial amount was approved.',
+        '150' => 'Error: Fallo general del sistema.',
+        '151' => 'Error: The request was received but there was a server timeout.',
+        '152' => 'Error: The request was received, but a service did not finish running in time.',
+        '200' => 'The authorization request was approved by the issuing bank but declined by CyberSource because it did not pass the Address Verification Service (AVS) check.',
+        '201' => 'El banco emisor tiene preguntas acerca de la solicitud.',
+        '202' => 'Tarjeta expirada.',
+        '203' => 'General decline of the card.',
+        '204' => 'No tiene fondos en esta cuenta.',
+        '205' => 'Robo o pérdida de la tarjeta.',
+        '207' => 'Banco emisor no disponible.',
+        '208' => 'Tarjeta inactiva o tarjeta no autorizada',
+        '209' => 'American Express Card Identification Digits (CID) did not match.',
+        '210' => 'La tarjeta ha alcanzado el límite de crédito.',
+        '211' => 'CVN inválido.',
+        '221' => 'The customer matched an entry on the processor\'s negative file.',
+        '230' => 'The authorization request was approved by the issuing bank but declined by CyberSource because it did not pass the CVN check.',
+        '231' => 'Número de la tarjeta de crédito no válido.',
+        '232' => 'El tipo de tarjeta no es aceptada por el procesador de pago.',
+        '233' => 'General decline by the processor.',
+        '234' => 'There is a problem with your CyberSource merchant configuration.',
+        '235' => 'La cantidad solicitada exceda el monto autorizado originalmente.',
+        '236' => 'Processor failure.',
+        '237' => 'The authorization has already been reversed.',
+        '238' => 'The authorization has already been captured.',
+        '239' => 'The requested transaction amount must match the previous transaction amount.',
+        '240' => 'The card type sent is invalid or does not correlate with the credit card number.',
+        '241' => 'El ID de solicitud no es válida.',
+        '242' => 'You requested a capture, but there is no corresponding, unused authorization record.',
+        '243' => 'The transaction has already been settled or reversed.',
+        '246' => 'The capture or credit is not voidable because the capture or credit information has laready been submitted to your processor. Or, you requested a void for a type of transaction that cannot be voided.',
+        '247' => 'You requested a credit for a capture that was previously voided.',
+        '250' => 'Error: The request was received, but there was a timeout at the payment processor.',
+        '481' => 'El pedido ha sido rechazado por decisión del administrador',
+        '520' => 'La solicitud de autorización fue aprobado por el banco emisor, pero declinó por CyberSource basado en la configuración inteligente de autorización.',
+    );
+
 
     public function __construct($request, $response)
     {
@@ -249,11 +291,18 @@ class CybersourceResponse extends AbstractResponse
                 // note that ERROR means some kind of system error or the processor rejected invalid data - it probably doesn't mean the card was actually declined
                 $this->statusOK = false;
                 $this->cybersourceResponseMessage =  self::$result_codes[ $this->response->reasonCode ];
+                if (Session::get('lan') == 'es') {
+                    $this->cybersourceResponseMessage =  self::$result_codes_es[ $this->response->reasonCode ];
+                }
+                
                 $this->cybersourceResponseReasonCode = $this->response->reasonCode;
             } else {
                 // declined, however, actually means declined. this would be decision 'REJECT', btw.
                 $this->statusOK = false;
                 $this->cybersourceResponseMessage =  self::$result_codes[ $this->response->reasonCode ];
+                if (Session::get('lan') == 'es') {
+                    $this->cybersourceResponseMessage =  self::$result_codes_es[ $this->response->reasonCode ];
+                }
                 $this->cybersourceResponseReasonCode = $this->response->reasonCode;
             }
         } else {
