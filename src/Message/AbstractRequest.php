@@ -123,63 +123,63 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
         // GET ALL PRODUCTS IN CART
 
 
-        $this->request->item = array();
-        $key_product = "product";
-        $ids_product = Carretilla::getAllWithAmount($key_product);
-        $key_accessory = "accessory";
-        $ids_accessory = Carretilla::getAllWithAmount($key_accessory);
+        // $this->request->item = array();
+        // $key_product = "product";
+        // $ids_product = Carretilla::getAllWithAmount($key_product);
+        // $key_accessory = "accessory";
+        // $ids_accessory = Carretilla::getAllWithAmount($key_accessory);
 
-        // var_dump($ids_product);
-        // var_dump($ids_accessory);
+        // // var_dump($ids_product);
+        // // var_dump($ids_accessory);
 
 
-        foreach ($ids_product as $key => $value) {
+        // foreach ($ids_product as $key => $value) {
             
-            $order = Product::find($value['id']);
+        //     $order = Product::find($value['id']);
 
-            if(!$order){
-                Carretilla::remove($value['id'], $key_product);
-            }else if (!$order->isActive){
-                Carretilla::remove($value['id'], $key_product);
-            }else{
-                $item = new stdClass;
-                $my_item_id = $value['id'];
-                //XML CYBERSOURCE 
-                $item->id = $value['id'];
-                $item->productName = $order->title_es;
-                $item->unitPrice = $value['price'];
-                $item->quantity = $value['amount'];
-                $item->productCode = "default";
-                $item->productSKU = $order->sku;
-                $item->type = "default";
-                $this->request->item[] = $item;
-            }
+        //     if(!$order){
+        //         Carretilla::remove($value['id'], $key_product);
+        //     }else if (!$order->isActive){
+        //         Carretilla::remove($value['id'], $key_product);
+        //     }else{
+        //         $item = new stdClass;
+        //         $my_item_id = $value['id'];
+        //         //XML CYBERSOURCE 
+        //         $item->id = $value['id'];
+        //         $item->productName = $order->title_es;
+        //         $item->unitPrice = $value['price'];
+        //         $item->quantity = $value['amount'];
+        //         $item->productCode = "default";
+        //         $item->productSKU = $order->sku;
+        //         $item->type = "default";
+        //         $this->request->item[] = $item;
+        //     }
 
     
-        }
+        // }
 
-        foreach ($ids_accessory as $key => $value) {
-            $order = Accessory::find($value['id']);
-            if ($value['verify']) {
-                if(!$order){
-                    Carretilla::remove($value['id'], $key_product);
-                }else if (!$order->isActive){
-                    Carretilla::remove($value['id'], $key_product);
-                }else{ 
-                    $item = new stdClass;
-                    $my_item_id = $value['id'];
-                    //XML
-                    $item->id = $value['id'];
-                    $item->productName = $order->title_es;
-                    $item->unitPrice = $value['price'];
-                    $item->quantity = $value['amount'];
-                    $item->productCode = "default";
-                    $item->productSKU = $order->sku;
-                    $item->type = "default";
-                    $this->request->item[] = $item;
-                }
-            }
-        }
+        // foreach ($ids_accessory as $key => $value) {
+        //     $order = Accessory::find($value['id']);
+        //     if ($value['verify']) {
+        //         if(!$order){
+        //             Carretilla::remove($value['id'], $key_product);
+        //         }else if (!$order->isActive){
+        //             Carretilla::remove($value['id'], $key_product);
+        //         }else{ 
+        //             $item = new stdClass;
+        //             $my_item_id = $value['id'];
+        //             //XML
+        //             $item->id = $value['id'];
+        //             $item->productName = $order->title_es;
+        //             $item->unitPrice = $value['price'];
+        //             $item->quantity = $value['amount'];
+        //             $item->productCode = "default";
+        //             $item->productSKU = $order->sku;
+        //             $item->type = "default";
+        //             $this->request->item[] = $item;
+        //         }
+        //     }
+        // }
 
 
 
