@@ -137,9 +137,9 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
             
             $order = Product::find($value['id']);
 
-            if(!$product){
+            if(!$order){
                 Carretilla::remove($value['id'], $key_product);
-            }else if (!$product->isActive){
+            }else if (!$order->isActive){
                 Carretilla::remove($value['id'], $key_product);
             }else{
 
@@ -160,9 +160,9 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
         foreach ($ids_accessory as $key => $value) {
             $order = Accessory::find($value['id']);
             if ($value['verify']) {
-                if(!$product){
+                if(!$order){
                     Carretilla::remove($value['id'], $key_product);
-                }else if (!$product->isActive){
+                }else if (!$order->isActive){
                     Carretilla::remove($value['id'], $key_product);
                 }else{ 
                     //XML
