@@ -134,28 +134,16 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
 
 
         foreach ($ids_product as $key => $value) {
-            var_dump($value);
+            
             $order = Product::find($value['id']);
-            var_dump($order);
 
-            //XML CYBERSOURCE 
-            $item->id = $value['id'];
-            $item->productName = $order->title_es;
-            $item->unitPrice = $value['price'];
-            $item->quantity = $value['amount'];
-            $item->productCode = "default";
-            $item->productSKU = $order->sku;
-            $item->type = "default";
-            $this->request->item[] = $item;
+            if(!$product){
+                Carretilla::remove($value['id'], $key_product);
+            }else if (!$product->isActive){
+                Carretilla::remove($value['id'], $key_product);
+            }else{
 
-    
-        }
-
-        foreach ($ids_accessory as $key => $value) {
-            $order = Accessory::find($value['id']);
-            if ($value['verify']) {
-
-                //XML
+                //XML CYBERSOURCE 
                 $item->id = $value['id'];
                 $item->productName = $order->title_es;
                 $item->unitPrice = $value['price'];
@@ -164,6 +152,29 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
                 $item->productSKU = $order->sku;
                 $item->type = "default";
                 $this->request->item[] = $item;
+            }
+
+    
+        }
+
+        foreach ($ids_accessory as $key => $value) {
+            $order = Accessory::find($value['id']);
+            if ($value['verify']) {
+                if(!$product){
+                    Carretilla::remove($value['id'], $key_product);
+                }else if (!$product->isActive){
+                    Carretilla::remove($value['id'], $key_product);
+                }else{ 
+                    //XML
+                    $item->id = $value['id'];
+                    $item->productName = $order->title_es;
+                    $item->unitPrice = $value['price'];
+                    $item->quantity = $value['amount'];
+                    $item->productCode = "default";
+                    $item->productSKU = $order->sku;
+                    $item->type = "default";
+                    $this->request->item[] = $item;
+                }
             }
         }
 
