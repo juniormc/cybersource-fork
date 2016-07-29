@@ -129,12 +129,14 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
         $key_accessory = "accessory";
         $ids_accessory = Carretilla::getAllWithAmount($key_accessory);
 
-        var_dump($ids_product);
-        var_dump($ids_accessory);
+        // var_dump($ids_product);
+        // var_dump($ids_accessory);
 
 
         foreach ($ids_product as $key => $value) {
+            var_dump($value);
             $order = Product::find($value['id']);
+            var_dump($order);
 
             //XML CYBERSOURCE 
             $item->id = $value['id'];
