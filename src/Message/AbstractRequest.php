@@ -18,6 +18,7 @@ use Session;
 use Cache;
 use stdClass;
 use App\Product;
+use App\Accessory;
 use App\Libraries\Utils\Carretilla;
 
 /**
