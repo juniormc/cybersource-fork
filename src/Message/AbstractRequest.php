@@ -170,7 +170,7 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
                     $my_item_id = $value['id'];
                     //XML
                     $item->id = $value['id'];
-                    $item->productName = $order->title_es;
+                    $item->productName = $order->name_en;
                     $item->unitPrice = $value['price'];
                     $item->quantity = $value['amount'];
                     $item->productCode = "default";
@@ -181,7 +181,6 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
             }
         }
 
-        var_dump($this->request);
 
 
 
