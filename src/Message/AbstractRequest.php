@@ -17,7 +17,7 @@ use Auth;
 use Session;
 use Cache;
 use stdClass;
-use App\Producto;
+use App\Product;
 use App\Libraries\Utils\Carretilla;
 
 /**
