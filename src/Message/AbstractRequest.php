@@ -142,7 +142,8 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
             }else if (!$order->isActive){
                 Carretilla::remove($value['id'], $key_product);
             }else{
-
+                $item = new stdClass;
+                $my_item_id = $value['id'];
                 //XML CYBERSOURCE 
                 $item->id = $value['id'];
                 $item->productName = $order->title_es;
@@ -165,6 +166,8 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
                 }else if (!$order->isActive){
                     Carretilla::remove($value['id'], $key_product);
                 }else{ 
+                    $item = new stdClass;
+                    $my_item_id = $value['id'];
                     //XML
                     $item->id = $value['id'];
                     $item->productName = $order->title_es;
