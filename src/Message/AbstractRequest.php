@@ -226,7 +226,7 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
 
         // this also is pretty stupid, particularly the name
         $purchase_totals = new \stdClass();
-        $purchase_totals->currency = 'GTQ';
+        $purchase_totals->currency = 'USD';
         $request->purchaseTotals = $purchase_totals;
 
         return $request;
