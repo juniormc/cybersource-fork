@@ -160,7 +160,7 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
 
         foreach ($ids_accessory as $key => $value) {
             $order = Accessory::find($value['id']);
-            if ($value['verify']) {
+            if ($value['verify'] && $value['amount'] > 0) {
                 if(!$order){
                     Carretilla::remove($value['id'], $key_product);
                 }else if (!$order->isActive){
